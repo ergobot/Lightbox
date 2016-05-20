@@ -3,13 +3,17 @@ package com.photonic3d.lightbox.fragments.sliceview.views;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
+
+import java.io.File;
 
 //import android.app.Fragment;
 
@@ -73,6 +77,16 @@ public class SliceSelectorFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        // Get the directory
+        if(isExternalStorageReadable() && isExternalStorageWritable()){
+            // Get all the files
+
+            // Load them into the array adapter
+        }
+
+
+
     }
 
     @Override
@@ -124,6 +138,34 @@ public class SliceSelectorFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
+
+    /* Checks if external storage is available for read and write */
+    public boolean isExternalStorageWritable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    /* Checks if external storage is available to at least read */
+    public boolean isExternalStorageReadable() {
+        String state = Environment.getExternalStorageState();
+        if (Environment.MEDIA_MOUNTED.equals(state) ||
+                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
+            return true;
+        }
+        return false;
+    }
+
+    public File getSliceArchiveStorageDir() {
+        // Get the directory for the user's public pictures directory.
+        File file = new File("lightbox");
+        if (!file.mkdirs()) {
+            Log.e(SliceSelectorFragment.TAG, "Directory not created");
+        }
+        return file;
+    }
 
 
 }
