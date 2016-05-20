@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
 
-//import android.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,13 +32,15 @@ public class SlicePlayerFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    String selectedFileName = null;
+
     private OnFragmentInteractionListener mListener;
 
     public SlicePlayerFragment() {
         // Required empty public constructor
     }
 
-    private static final String ARG_SECTION_NUMBER = "section_number";
+    private static final String ARG_SECTION_NUMBER = "selectedFileName";
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -58,11 +59,13 @@ public class SlicePlayerFragment extends Fragment {
         return fragment;
     }
 
-    public static SlicePlayerFragment newInstance(int sectionNumber) {
+    public static SlicePlayerFragment newInstance(String selectedFileName) {
         SlicePlayerFragment fragment = new SlicePlayerFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-        fragment.setArguments(args);
+        if(selectedFileName != null) {
+            Bundle args = new Bundle();
+            args.putString(ARG_SECTION_NUMBER, selectedFileName);
+            fragment.setArguments(args);
+        }
         return fragment;
     }
 
@@ -79,7 +82,12 @@ public class SlicePlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.view_slice_player, container, false);
+        View rootView =  inflater.inflate(R.layout.view_slice_view_player, container, false);
+
+
+
+
+        return rootView;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

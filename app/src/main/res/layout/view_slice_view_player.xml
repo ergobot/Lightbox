@@ -84,35 +84,35 @@
                 android:layout_alignParentLeft="true"
                 />
 
-            <!--<ImageButton-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/previousbutton"-->
-                <!--android:src="@drawable/ic_skip_previous_black_24dp"-->
-                <!--android:background="@null"-->
-                <!--android:layout_toLeftOf="@+id/actionbutton"-->
-                <!--android:layout_marginRight="20dp"-->
-                <!--android:layout_centerVertical="true"/>-->
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/previousbutton"
+                android:src="@drawable/ic_skip_previous_black_24dp"
+                android:background="@null"
+                android:layout_toLeftOf="@+id/actionbutton"
+                android:layout_marginRight="20dp"
+                android:layout_centerVertical="true"/>
 
-            <!--<android.support.design.widget.FloatingActionButton-->
-                <!--android:id="@+id/actionbutton"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_gravity="bottom|end"-->
-                <!--android:layout_margin="@dimen/fab_margin"-->
-                <!--android:src="@drawable/ic_play_arrow_black_24dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--/>-->
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/actionbutton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end"
+                android:layout_margin="@dimen/fab_margin"
+                android:src="@drawable/ic_play_arrow_black_24dp"
+                android:layout_centerHorizontal="true"
+                />
 
-            <!--<ImageButton-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:id="@+id/nextbutton"-->
-                <!--android:src="@drawable/ic_skip_next_black_24dp"-->
-                <!--android:background="@null"-->
-                <!--android:layout_toRightOf="@+id/actionbutton"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_centerVertical="true"/>-->
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nextbutton"
+                android:src="@drawable/ic_skip_next_black_24dp"
+                android:background="@null"
+                android:layout_toRightOf="@+id/actionbutton"
+                android:layout_marginLeft="20dp"
+                android:layout_centerVertical="true"/>
 
 
 
