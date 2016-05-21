@@ -5,15 +5,23 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
+import com.photonic3d.lightbox.fragments.sliceview.viewholder.SliceArchive;
+import com.photonic3d.lightbox.fragments.sliceview.viewholder.SliceArchiveAdapter;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 //import android.app.Fragment;
 
@@ -38,6 +46,15 @@ public class SliceSelectorFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+
+    TextView archiveTitleTextView;
+
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
+
+    List<SliceArchive> sliceArchiveList = null;
 
     public SliceSelectorFragment() {
         // Required empty public constructor
@@ -78,22 +95,56 @@ public class SliceSelectorFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        // Get the directory
-        if(isExternalStorageReadable() && isExternalStorageWritable()){
-            // Get all the files
-
-            // Load them into the array adapter
-        }
-
-
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.view_slice_view_selector, container, false);
+        View rootView = inflater.inflate(R.layout.view_slice_view_selector, container, false);
+
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        sliceArchiveList = getArchiveList();
+        mAdapter = new SliceArchiveAdapter(sliceArchiveList, new SliceArchiveAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(SliceArchive item) {
+                // TODO: 5/20/16
+                // replace this fragment with the other fragment
+            }
+        });
+        mRecyclerView.setAdapter(mAdapter);
+
+        return rootView;
+    }
+
+    private List<SliceArchive> getArchiveList(){
+        ArrayList<SliceArchive> files = new ArrayList<SliceArchive>();
+        // Get the directory
+        if(isExternalStorageReadable() && isExternalStorageWritable()){
+            // Get all the files
+            File sliceArchive = getSliceArchiveStorageDir();
+            File file[] = sliceArchive.listFiles();
+            Log.d("Files", "Size: "+ file.length);
+            for (int i=0; i < file.length; i++)
+            {
+                Log.d("Files", "FileName:" + file[i].getName());
+                SliceArchive archive = new SliceArchive();
+                archive.setFile(file[i]);
+                files.add(archive);
+            }
+
+        }
+        return files;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
