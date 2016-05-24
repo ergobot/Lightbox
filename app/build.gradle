@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.photonic3d.lightbox"
         minSdkVersion 22
-        targetSdkVersion 23
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -31,4 +31,9 @@ dependencies {
 
     // handling archives
     compile group: 'net.lingala.zip4j', name: 'zip4j', version: '1.2.4'
+
+    //commons-io
+    compile "commons-io:commons-io:+"
+
+
 }

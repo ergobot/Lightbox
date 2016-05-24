@@ -106,10 +106,15 @@ public class NavigationActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_slice_view) {
             // Chang to the slice view fragment
-            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
-            if (galleryFragment == null) {
-                fragmentManager.beginTransaction().replace(R.id.container, SliceViewFragment.newInstance(id), SliceViewFragment.TAG).commit();
+//            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
+//            if (galleryFragment == null) {
+//                fragmentManager.beginTransaction().replace(R.id.container, SliceViewFragment.newInstance(id), SliceViewFragment.TAG).commit();
+//            }
+            ArchiveSelectorFragment archiveSelectorFragment = (ArchiveSelectorFragment) fragmentManager.findFragmentByTag(ArchiveSelectorFragment.TAG);
+            if (archiveSelectorFragment == null) {
+                fragmentManager.beginTransaction().replace(R.id.container, ArchiveSelectorFragment.newInstance(id), ArchiveSelectorFragment.TAG).commit();
             }
+
         }
         else if (id == R.id.nav_print) {
             // Chang to the print fragment
