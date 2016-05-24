@@ -20,18 +20,18 @@ import com.photonic3d.lightbox.R;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SlicePlayerFragment.OnFragmentInteractionListener} interface
+ * {@link SliceViewerFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SlicePlayerFragment#newInstance} factory method to
+ * Use the {@link SliceViewerFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SlicePlayerFragment extends Fragment {
+public class SliceViewerFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String TAG = "SlicePlayerFragment";
+    public static final String TAG = "SliceViewerFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -41,7 +41,7 @@ public class SlicePlayerFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SlicePlayerFragment() {
+    public SliceViewerFragment() {
         // Required empty public constructor
     }
 
@@ -63,8 +63,8 @@ public class SlicePlayerFragment extends Fragment {
      * @return A new instance of fragment OpenStlFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SlicePlayerFragment newInstance(String param1, String param2) {
-        SlicePlayerFragment fragment = new SlicePlayerFragment();
+    public static SliceViewerFragment newInstance(String param1, String param2) {
+        SliceViewerFragment fragment = new SliceViewerFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -72,8 +72,8 @@ public class SlicePlayerFragment extends Fragment {
         return fragment;
     }
 
-    public static SlicePlayerFragment newInstance(String selectedFileName) {
-        SlicePlayerFragment fragment = new SlicePlayerFragment();
+    public static SliceViewerFragment newInstance(String selectedFileName) {
+        SliceViewerFragment fragment = new SliceViewerFragment();
         if(selectedFileName != null) {
             Bundle args = new Bundle();
             args.putString(ARG_SECTION_NUMBER, selectedFileName);

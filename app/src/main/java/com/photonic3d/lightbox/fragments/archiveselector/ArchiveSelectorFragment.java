@@ -1,9 +1,8 @@
-package com.photonic3d.lightbox.fragments.sliceview.views;
+package com.photonic3d.lightbox.fragments.archiveselector;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,12 +14,11 @@ import android.widget.TextView;
 
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
-import com.photonic3d.lightbox.fragments.sliceview.viewholder.SliceArchive;
-import com.photonic3d.lightbox.fragments.sliceview.viewholder.SliceArchiveAdapter;
+import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchive;
+import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchiveAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 //import android.app.Fragment;
@@ -28,18 +26,18 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link SliceSelectorFragment.OnFragmentInteractionListener} interface
+ * {@link ArchiveSelectorFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link SliceSelectorFragment#newInstance} factory method to
+ * Use the {@link ArchiveSelectorFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SliceSelectorFragment extends Fragment {
+public class ArchiveSelectorFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    public static final String TAG = "SliceSelectorFragment";
+    public static final String TAG = "ArchiveSelectorFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -56,7 +54,7 @@ public class SliceSelectorFragment extends Fragment {
 
     List<SliceArchive> sliceArchiveList = null;
 
-    public SliceSelectorFragment() {
+    public ArchiveSelectorFragment() {
         // Required empty public constructor
     }
 
@@ -70,8 +68,8 @@ public class SliceSelectorFragment extends Fragment {
      * @return A new instance of fragment OpenStlFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static SliceSelectorFragment newInstance(String param1, String param2) {
-        SliceSelectorFragment fragment = new SliceSelectorFragment();
+    public static ArchiveSelectorFragment newInstance(String param1, String param2) {
+        ArchiveSelectorFragment fragment = new ArchiveSelectorFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -79,8 +77,8 @@ public class SliceSelectorFragment extends Fragment {
         return fragment;
     }
 
-    public static SliceSelectorFragment newInstance(int sectionNumber) {
-        SliceSelectorFragment fragment = new SliceSelectorFragment();
+    public static ArchiveSelectorFragment newInstance(int sectionNumber) {
+        ArchiveSelectorFragment fragment = new ArchiveSelectorFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_SECTION_NUMBER, sectionNumber);
         fragment.setArguments(args);
@@ -130,7 +128,6 @@ public class SliceSelectorFragment extends Fragment {
     private List<SliceArchive> getArchiveList(){
         ArrayList<SliceArchive> files = new ArrayList<SliceArchive>();
         // Get the directory
-        if(isExternalStorageReadable() && isExternalStorageWritable()){
             // Get all the files
             File sliceArchive = getSliceArchiveStorageDir();
             File file[] = sliceArchive.listFiles();
@@ -143,7 +140,6 @@ public class SliceSelectorFragment extends Fragment {
                 files.add(archive);
             }
 
-        }
         return files;
     }
 
@@ -189,33 +185,23 @@ public class SliceSelectorFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-
-    /* Checks if external storage is available for read and write */
-    public boolean isExternalStorageWritable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
-    /* Checks if external storage is available to at least read */
-    public boolean isExternalStorageReadable() {
-        String state = Environment.getExternalStorageState();
-        if (Environment.MEDIA_MOUNTED.equals(state) ||
-                Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
-            return true;
-        }
-        return false;
-    }
-
     public File getSliceArchiveStorageDir() {
         // Get the directory for the user's public pictures directory.
-        File file = new File("lightbox");
+        File file = getContext().getDir("lightbox/storage",Context.MODE_WORLD_READABLE);
         if (!file.mkdirs()) {
-            Log.e(SliceSelectorFragment.TAG, "Directory not created");
+            Log.e(ArchiveSelectorFragment.TAG, "Directory not created");
         }
         return file;
+    }
+
+    public File getSliceArchiveWorkingDir(){
+        // Get the directory for the user's public pictures directory.
+        File file = new File(getContext().getFilesDir(),"working");
+        if (!file.mkdirs()) {
+            Log.e(ArchiveSelectorFragment.TAG, "Directory not created");
+        }
+        return file;
+
     }
 
 

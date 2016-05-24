@@ -17,15 +17,18 @@ import android.view.MenuItem;
 
 import com.photonic3d.lightbox.fragments.home.HomeFragment;
 import com.photonic3d.lightbox.fragments.sliceview.SliceViewFragment;
-import com.photonic3d.lightbox.fragments.sliceview.views.SlicePlayerFragment;
-import com.photonic3d.lightbox.fragments.sliceview.views.SliceSelectorFragment;
+import com.photonic3d.lightbox.fragments.archiveselector.ArchiveSelectorFragment;
+import com.photonic3d.lightbox.fragments.sliceview.views.SliceViewerFragment;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HomeFragment.OnFragmentInteractionListener,
         SliceViewFragment.OnFragmentInteractionListener,
-        SlicePlayerFragment.OnFragmentInteractionListener,
-        SliceSelectorFragment.OnFragmentInteractionListener{
+        SliceViewerFragment.OnFragmentInteractionListener,
+        ArchiveSelectorFragment.OnFragmentInteractionListener{
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

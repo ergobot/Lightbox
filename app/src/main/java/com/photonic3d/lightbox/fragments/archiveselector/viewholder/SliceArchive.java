@@ -1,4 +1,4 @@
-package com.photonic3d.lightbox.fragments.sliceview.viewholder;
+package com.photonic3d.lightbox.fragments.archiveselector.viewholder;
 
 import java.io.File;
 

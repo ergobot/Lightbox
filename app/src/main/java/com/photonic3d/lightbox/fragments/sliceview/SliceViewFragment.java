@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
+import com.photonic3d.lightbox.fragments.archiveselector.ArchiveSelectorFragment;
 
 //import android.app.Fragment;
 
@@ -79,7 +80,18 @@ public class SliceViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_slice_view, container, false);
+
+        View rootView = inflater.inflate(R.layout.fragment_slice_view, container, false);
+
+        ArchiveSelectorFragment sliceChildFragment = (ArchiveSelectorFragment)getChildFragmentManager().findFragmentByTag(ArchiveSelectorFragment.TAG);
+        if(sliceChildFragment != null){
+            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.container_slice_view, sliceChildFragment, ArchiveSelectorFragment.TAG).commit();
+
+        }
+
+
+        return rootView;
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event
