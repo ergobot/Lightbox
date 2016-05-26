@@ -1,10 +1,14 @@
 package com.photonic3d.lightbox;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,14 +24,21 @@ import com.photonic3d.lightbox.fragments.sliceview.SliceViewFragment;
 import com.photonic3d.lightbox.fragments.archiveselector.ArchiveSelectorFragment;
 import com.photonic3d.lightbox.fragments.sliceview.views.SliceViewerFragment;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HomeFragment.OnFragmentInteractionListener,
         SliceViewFragment.OnFragmentInteractionListener,
         SliceViewerFragment.OnFragmentInteractionListener,
         ArchiveSelectorFragment.OnFragmentInteractionListener{
-
-
 
 
     @Override
@@ -87,7 +98,7 @@ public class NavigationActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
-
+    private static final int READ_REQUEST_CODE = 42;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -116,7 +127,9 @@ public class NavigationActivity extends AppCompatActivity
             }
 
         }
-        else if (id == R.id.nav_print) {
+        else if (id == R.id.nav_add_file) {
+
+            performFileSearch();
             // Chang to the print fragment
 //            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
 //            if (galleryFragment == null) {
@@ -153,6 +166,72 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * Fires an intent to spin up the "file chooser" UI and select an image.
+     */
+    public void performFileSearch() {
+
+        // ACTION_OPEN_DOCUMENT is the intent to choose a file via the system's file
+        // browser.
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+
+        // Filter to only show results that can be "opened", such as a
+        // file (as opposed to a list of contacts or timezones)
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        // Filter to show only images, using the image MIME data type.
+        // If one wanted to search for ogg vorbis files, the type would be "audio/ogg".
+        // To search for all documents available via installed storage providers,
+        // it would be "*/*".
+        intent.setType("*/*");
+
+        startActivityForResult(intent, READ_REQUEST_CODE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode,
+                                 Intent resultData) {
+
+        // The ACTION_OPEN_DOCUMENT intent was sent with the request code
+        // READ_REQUEST_CODE. If the request code seen here doesn't match, it's the
+        // response to some other intent, and the code below shouldn't run at all.
+
+        if (requestCode == READ_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+            // The document selected by the user won't be returned in the intent.
+            // Instead, a URI to that document will be contained in the return intent
+            // provided to this method as a parameter.
+            // Pull that URI using resultData.getData().
+            Uri uri = null;
+            if (resultData != null) {
+                uri = resultData.getData();
+                Log.i("loader", "Uri: " + uri.toString());
+                loadFileIntoApp(uri);
+            }
+        }
+    }
+
+
+    public void loadFileIntoApp(Uri uri){
+        File file = new File(uri.getPath());
+        InputStream is = null;
+        try {
+            File destination = new File(this.getFilesDir(), FilenameUtils.getName(uri.getPath()));
+            is = getContentResolver().openInputStream(uri);
+//            FileUtils.copyFileToDirectory(file, this.getFilesDir());
+            FileUtils.copyInputStreamToFile(is,destination);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+            if(is != null){
+                try {
+                    is.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void onSectionAttached(int number){
