@@ -217,7 +217,9 @@ public class NavigationActivity extends AppCompatActivity
         File file = new File(uri.getPath());
         InputStream is = null;
         try {
-            File destination = new File(this.getFilesDir(), FilenameUtils.getName(uri.getPath()));
+            File destinationDir = new File(this.getFilesDir(), "files");
+            File destination = new File(destinationDir, FilenameUtils.getName(uri.getPath()));
+
             is = getContentResolver().openInputStream(uri);
 //            FileUtils.copyFileToDirectory(file, this.getFilesDir());
             FileUtils.copyInputStreamToFile(is,destination);

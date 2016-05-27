@@ -19,6 +19,7 @@ import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchive
 import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchiveAdapter;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -119,7 +120,7 @@ public class ArchiveSelectorFragment extends Fragment {
             mRecyclerView.setLayoutManager(mLayoutManager);
 
             // get demo files from download folder
-            loadDemoFiles();
+            //loadDemoFiles();
 
             // specify an adapter (see also next example)
             sliceArchiveList = getArchiveList();
@@ -225,7 +226,8 @@ public class ArchiveSelectorFragment extends Fragment {
 
     public File getSliceArchiveStorageDir() {
         // Get the directory for the user's public pictures directory.
-        File file = new File(Environment.getExternalStorageDirectory(),"lightbox");
+        File file = new File(getContext().getFilesDir(), "files");
+//        File file = new File(Environment.getExternalStorageDirectory(),"lightbox");
         if (!file.mkdirs()) {
             Log.e(ArchiveSelectorFragment.TAG, "Directory not created");
         }
