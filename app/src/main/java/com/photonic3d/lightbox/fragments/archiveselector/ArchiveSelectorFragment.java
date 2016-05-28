@@ -20,17 +20,11 @@ import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchive
 import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchiveAdapter;
 import com.photonic3d.lightbox.fragments.sliceview.SliceViewerFragment;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import android.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.

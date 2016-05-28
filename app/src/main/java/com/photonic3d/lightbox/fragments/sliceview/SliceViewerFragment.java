@@ -1,11 +1,15 @@
 package com.photonic3d.lightbox.fragments.sliceview;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +19,15 @@ import android.widget.SeekBar;
 
 import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
+
+import org.apache.commons.io.FileUtils;
+
+import java.io.File;
+import java.io.IOException;
 
 
 /**
@@ -52,6 +65,8 @@ public class SliceViewerFragment extends Fragment {
 
     MediaPlayer mediaPlayer = null;
     private SeekBar seekbar;
+
+    ViewPager viewPager;
 
     private static final String ARG_SECTION_NUMBER = "selectedFileName";
     /**
@@ -98,10 +113,8 @@ public class SliceViewerFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView =  inflater.inflate(R.layout.view_slice_view_player, container, false);
 
-
-
-
-
+        viewPager = (ViewPager)rootView.findViewById(R.id.pager);
+        viewPager.setAdapter(buildAdapter());
 
         return rootView;
     }
@@ -117,7 +130,7 @@ public class SliceViewerFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         ((NavigationActivity) context).onSectionAttached(
-                getArguments().getInt(ARG_SECTION_NUMBER));
+                Integer.parseInt(getArguments().getString(ARG_SECTION_NUMBER)));
 
         try {
             mListener = (OnFragmentInteractionListener) context;
@@ -146,5 +159,44 @@ public class SliceViewerFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private PagerAdapter buildAdapter() {
+
+        /*
+        You got a habit, got to have it ’til it’s finished don’t drop
+         */
+        // Unpack the files
+        File unpackDir = new File(getContext().getFilesDir(),"unpacked");
+        File archiveDir = new File(getContext().getFilesDir(),"archives");
+        try{
+            FileUtils.deleteDirectory(unpackDir);
+        }catch(IOException ex){
+            Log.e("file",ex.toString());
+        }
+        // get the name of the file
+        SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();  // Put the values from the UI
+//        editor.putString("file", item.getFile().getName());
+        String archiveName =preferences.getString("file","SLAcer.zip");
+        File archiveFile = new File(archiveDir, archiveName);
+
+        ZipFile zipFile;
+        try {
+            zipFile = new ZipFile(archiveFile);
+            FileUtils.forceMkdir(unpackDir);
+            for(int i = 0; i < zipFile.getFileHeaders().size(); i++){
+                // stopped here - unpack archive to working directory
+            }
+
+            zipFile.extractAll(unpackDir.getAbsolutePath());
+        } catch (ZipException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        return(new SliceViewPagerAdapter(getActivity(), getChildFragmentManager(),84));
     }
 }

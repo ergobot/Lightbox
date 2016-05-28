@@ -114,38 +114,7 @@ public class NavigationActivity extends AppCompatActivity
         }
         else if (id == R.id.nav_add_file) {
             performFileSearch();
-            // Chang to the print fragment
-//            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
-//            if (galleryFragment == null) {
-//                fragmentManager.beginTransaction().replace(R.id.container, SliceViewFragment.newInstance(id), SliceViewFragment.TAG).commit();
-//            }
         }
-
-//        } else if (id == R.id.nav_slideshow) {
-//            // Change to the slideshow fragment
-//            SlideshowFragment slideShowFragment = (SlideshowFragment) fragmentManager.findFragmentByTag(SlideshowFragment.TAG);
-//            if(slideShowFragment == null) {
-//                fragmentManager.beginTransaction().replace(R.id.container, SlideshowFragment.newInstance(id), SlideshowFragment.TAG).commit();
-//            }
-//
-//        } else if (id == R.id.nav_manage) {
-//            // Change to the slideshow fragment
-//            ToolsFragment toolsFragment = (ToolsFragment) fragmentManager.findFragmentByTag(ToolsFragment.TAG);
-//            if(toolsFragment == null) {
-//                fragmentManager.beginTransaction().replace(R.id.container, ToolsFragment.newInstance(id), ToolsFragment.TAG).commit();
-//            }
-//
-//        } else if (id == R.id.nav_share) {
-//            // Make it do something..
-//            // Doesn't currently do anything
-//
-//
-//        } else if (id == R.id.nav_send) {
-//            // Make it do something else..
-//            // Doesn't currently do anything
-//
-//
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
