@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
@@ -20,25 +19,23 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.photonic3d.lightbox.fragments.home.HomeFragment;
-import com.photonic3d.lightbox.fragments.sliceview.SliceViewFragment;
 import com.photonic3d.lightbox.fragments.archiveselector.ArchiveSelectorFragment;
-import com.photonic3d.lightbox.fragments.sliceview.views.SliceViewerFragment;
+import com.photonic3d.lightbox.fragments.sliceview.SliceViewerFragment;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class NavigationActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         HomeFragment.OnFragmentInteractionListener,
-        SliceViewFragment.OnFragmentInteractionListener,
         SliceViewerFragment.OnFragmentInteractionListener,
         ArchiveSelectorFragment.OnFragmentInteractionListener{
+
+
 
 
     @Override
@@ -109,26 +106,13 @@ public class NavigationActivity extends AppCompatActivity
 
         if (id == R.id.nav_home) {
             // Change to the import fragment
-            HomeFragment homeFragment= (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.TAG);
-            if(homeFragment == null) {
-                fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance(id), HomeFragment.TAG).commit();
-            }
-
+            changeFragment(HomeFragment.TAG);
         }
         else if (id == R.id.nav_slice_view) {
-            // Chang to the slice view fragment
-//            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
-//            if (galleryFragment == null) {
-//                fragmentManager.beginTransaction().replace(R.id.container, SliceViewFragment.newInstance(id), SliceViewFragment.TAG).commit();
-//            }
-            ArchiveSelectorFragment archiveSelectorFragment = (ArchiveSelectorFragment) fragmentManager.findFragmentByTag(ArchiveSelectorFragment.TAG);
-            if (archiveSelectorFragment == null) {
-                fragmentManager.beginTransaction().replace(R.id.container, ArchiveSelectorFragment.newInstance(id), ArchiveSelectorFragment.TAG).commit();
-            }
+            changeFragment(ArchiveSelectorFragment.TAG);
 
         }
         else if (id == R.id.nav_add_file) {
-
             performFileSearch();
             // Chang to the print fragment
 //            SliceViewFragment galleryFragment = (SliceViewFragment) fragmentManager.findFragmentByTag(SliceViewFragment.TAG);
@@ -166,6 +150,36 @@ public class NavigationActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+    public void changeFragment(String fragmentTag){
+        FragmentManager fragmentManager = this.getSupportFragmentManager();
+
+        switch (fragmentTag){
+            case HomeFragment.TAG:
+                HomeFragment homeFragment= (HomeFragment) fragmentManager.findFragmentByTag(HomeFragment.TAG);
+                if(homeFragment == null) {
+                    fragmentManager.beginTransaction().replace(R.id.container, HomeFragment.newInstance(0), HomeFragment.TAG).commit();
+                }
+                break;
+
+            case ArchiveSelectorFragment.TAG:
+                ArchiveSelectorFragment archiveSelectorFragment = (ArchiveSelectorFragment) fragmentManager.findFragmentByTag(ArchiveSelectorFragment.TAG);
+                if(archiveSelectorFragment == null) {
+                    fragmentManager.beginTransaction().replace(R.id.container, ArchiveSelectorFragment.newInstance(0), ArchiveSelectorFragment.TAG).commit();
+                }
+                break;
+            case SliceViewerFragment.TAG:
+                SliceViewerFragment sliceViewerFragment = (SliceViewerFragment) fragmentManager.findFragmentByTag(SliceViewerFragment.TAG);
+                if(sliceViewerFragment == null) {
+                    fragmentManager.beginTransaction().replace(R.id.container, SliceViewerFragment.newInstance("0"), SliceViewerFragment.TAG).commit();
+                }
+                break;
+
+        }
+
     }
 
     /**
@@ -217,7 +231,7 @@ public class NavigationActivity extends AppCompatActivity
         File file = new File(uri.getPath());
         InputStream is = null;
         try {
-            File destinationDir = new File(this.getFilesDir(), "files");
+            File destinationDir = new File(this.getFilesDir(), "archives");
             File destination = new File(destinationDir, FilenameUtils.getName(uri.getPath()));
 
             is = getContentResolver().openInputStream(uri);

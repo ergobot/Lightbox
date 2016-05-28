@@ -1,4 +1,4 @@
-package com.photonic3d.lightbox.fragments.sliceview.views;
+package com.photonic3d.lightbox.fragments.sliceview;
 
 import android.content.Context;
 import android.media.MediaPlayer;

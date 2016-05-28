@@ -1,6 +1,7 @@
 package com.photonic3d.lightbox.fragments.archiveselector;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -17,6 +18,7 @@ import com.photonic3d.lightbox.NavigationActivity;
 import com.photonic3d.lightbox.R;
 import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchive;
 import com.photonic3d.lightbox.fragments.archiveselector.viewholder.SliceArchiveAdapter;
+import com.photonic3d.lightbox.fragments.sliceview.SliceViewerFragment;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -127,8 +129,11 @@ public class ArchiveSelectorFragment extends Fragment {
             mAdapter = new SliceArchiveAdapter(sliceArchiveList, new SliceArchiveAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(SliceArchive item) {
-                    // TODO: 5/20/16
-                    // replace this fragment with the other fragment
+                    // Store values between instances here
+                    SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();  // Put the values from the UI
+                    editor.putString("file", item.getFile().getName());
+                    ((NavigationActivity)getActivity()).changeFragment(SliceViewerFragment.TAG);
                 }
             });
             mRecyclerView.setAdapter(mAdapter);
@@ -136,33 +141,33 @@ public class ArchiveSelectorFragment extends Fragment {
         return rootView;
     }
 
-    private void loadDemoFiles(){
-        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "SLAcer.zip");
-        try {
-            FileUtils.copyFileToDirectory(file, getContext().getFilesDir());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-//
-//
-//
-        String filename = "myfile";
-        String string = "Hello world!";
-//        FileOutputStream outputStream;
-//
+//    private void loadDemoFiles(){
+//        File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "SLAcer.zip");
 //        try {
-//            outputStream = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
-//            IOUtils.copy(FileUtils.openInputStream(file),)
-//            outputStream.write();
-//            outputStream.close();
-//        } catch (Exception e) {
+//            FileUtils.copyFileToDirectory(file, getContext().getFilesDir());
+//        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-
-
-
-    }
+//
+////
+////
+////
+//        String filename = "myfile";
+//        String string = "Hello world!";
+////        FileOutputStream outputStream;
+////
+////        try {
+////            outputStream = getContext().openFileOutput(filename, Context.MODE_PRIVATE);
+////            IOUtils.copy(FileUtils.openInputStream(file),)
+////            outputStream.write();
+////            outputStream.close();
+////        } catch (Exception e) {
+////            e.printStackTrace();
+////        }
+//
+//
+//
+//    }
 
     private List<SliceArchive> getArchiveList(){
         ArrayList<SliceArchive> files = new ArrayList<SliceArchive>();
@@ -226,7 +231,7 @@ public class ArchiveSelectorFragment extends Fragment {
 
     public File getSliceArchiveStorageDir() {
         // Get the directory for the user's public pictures directory.
-        File file = new File(getContext().getFilesDir(), "files");
+        File file = new File(getContext().getFilesDir(), "archives");
 //        File file = new File(Environment.getExternalStorageDirectory(),"lightbox");
         if (!file.mkdirs()) {
             Log.e(ArchiveSelectorFragment.TAG, "Directory not created");
